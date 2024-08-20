@@ -49,3 +49,15 @@ return null;
 }
 
 client.login(TOKEN);
+
+const automod = require('./automod');
+
+client.once('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.on('messageCreate', (message) => {
+  automod(client, message);
+});
+
+client.login(process.env.DISCORD_BOT_TOKEN);
