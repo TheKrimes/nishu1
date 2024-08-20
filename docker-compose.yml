@@ -1,9 +1,20 @@
- version: '3'
- services:
-   app:
-     build: .
-     volumes:
-       - .:/app
-     ports:
-       - "8080:8080"
- 
+version: '3.8'
+
+services:
+  app:
+    build: .
+    command: npm start
+    environment:
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+      - GIPHY_API_KEY=${GIPHY_API_KEY}
+    secrets:
+      - discord_bot_token
+      - giphy_api_key
+    volumes:
+      - .:/app
+
+secrets:
+  discord_bot_token:
+    external: true
+  giphy_api_key:
+    external: true
