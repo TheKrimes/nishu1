@@ -1,0 +1,14 @@
+{
+"name": "sudhe",
+"version": "1.0.0",
+"main": "Gif.js",
+"scripts": {},
+"keywords": [],
+"author": "",
+"license": "ISC",
+"description": "",
+"dependencies": {
+"discord.js": "^14.0.0",
+"axios": "^1.0.0"
+}
+}

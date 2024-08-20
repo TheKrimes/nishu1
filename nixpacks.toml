@@ -1,0 +1,11 @@
+[project]
+name = "nishu"
+
+[dependencies]
+# example dependencies, replace with your actual ones
+node = "14.x"
+python = "3.8"
+
+[scripts]
+# example scripts, replace with your actual ones
+start = "node index.js"
