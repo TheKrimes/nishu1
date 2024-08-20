@@ -1,4 +1,4 @@
-{
+//main{
   "name": "sudhe",
   "version": "1.0.0",
   "main": "Gif.js",
@@ -12,4 +12,10 @@
     "axios": "^1.0.0",
     "dotenv": "^10.0.0"
   }
+}
+//auto-mod{
+  "spamThreshold": 2000, // Time in milliseconds
+  "badWords": ["badword1", "badword2", "badword3"], // List of bad words
+  "muteDuration": 60000, // Time in milliseconds for temporary mute
+  "warnMessage": "Please refrain from using inappropriate language or spamming."
 }
