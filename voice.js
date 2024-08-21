@@ -6,15 +6,8 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 
 const ttsClient = new textToSpeech.TextToSpeechClient();
 
-const responses = [
-"Namaste, kaise ho tum log?",
-"Hello, kya chal raha hai?",
-"Hi, sab theek hai na?",
-"Hey, kya haal hai?",
-"What's up, sab badhiya?"
-];
-
 async function convertTextToSpeech(text) {
+try {
 const request = {
 input: { text: text },
 voice: { languageCode: 'hi-IN', ssmlGender: 'FEMALE' },
@@ -27,6 +20,9 @@ const filePath = 'output.mp3';
 await writeFile(filePath, response.audioContent, 'binary');
 console.log('Audio content written to file:', filePath);
 return filePath;
+} catch (error) {
+console.error('Error during text-to-speech conversion:', error);
+}
 }
 
 client.once('ready', () => {
@@ -39,10 +35,11 @@ if (message.author.bot) return;  // bot ke messages ko ignore karo
 console.log('Message received:', message.content);
 
 setInterval(async () => {
-const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-console.log('Generating random response:', randomResponse);
+// Generated response dynamically based on some logic
+const dynamicResponse = `Hello ${message.author.username}, kaise ho?`; // example dynamic response
+console.log('Generating dynamic response:', dynamicResponse);
 
-const filePath = await convertTextToSpeech(randomResponse);
+const filePath = await convertTextToSpeech(dynamicResponse);
 console.log('File path:', filePath);
 
 if (message.channel) {
@@ -50,13 +47,13 @@ console.log('Sending message to channel:', message.channel.id);
 message.channel.send({
 files: [{
 attachment: filePath,
-name: 'NishuVoiceNote.mp3'
+name: 'response.mp3'
 }],
 }).catch(err => console.error('Error sending message:', err));
 } else {
 console.log('Channel not found!');
 }
-}, 30);  // yahan par time interval set kar sakte ho (milliseconds mein)
+}, 60000);  // yahan par time interval set kar sakte ho (milliseconds mein)
 });
 
-client.login('DISCORD_BOT_TOKEN');
+client.login(process.env.DISCORD_BOT_TOKEN);
