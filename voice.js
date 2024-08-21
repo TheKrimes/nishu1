@@ -54,4 +54,4 @@ console.log('Channel not found!');
 }, 60000);  // yahan par time interval set kar sakte ho (milliseconds mein)
 });
 
-client.login('YOUR_BOT_TOKEN');
+client.login('DISCORD_BOT_TOKEN');
