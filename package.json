@@ -2,7 +2,7 @@
 "name": "Nishu",
 "version": "1.0.0",
 "description": "Most Advanced Discord Bot By Krimes with Shapes INC and Disha",
-"main": "index.js",
+"main": "Gif.js",
 "scripts": {
 "start": "node index.js",
 "voice": "node voice.js"
