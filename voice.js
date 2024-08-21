@@ -36,22 +36,27 @@ console.log('Nishu is online!');
 client.on('messageCreate', async message => {
 if (message.author.bot) return;  // bot ke messages ko ignore karo
 
+console.log('Message received:', message.content);
+
 setInterval(async () => {
 const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+console.log('Generating random response:', randomResponse);
 
 const filePath = await convertTextToSpeech(randomResponse);
+console.log('File path:', filePath);
 
 if (message.channel) {
+console.log('Sending message to channel:', message.channel.id);
 message.channel.send({
 files: [{
 attachment: filePath,
-name: 'response.mp3'
+name: 'NishuVoiceNote.mp3'
 }],
-});
+}).catch(err => console.error('Error sending message:', err));
 } else {
 console.log('Channel not found!');
 }
-}, 60000);  // yahan par time interval set kar sakte ho (milliseconds mein)
+}, 30);  // yahan par time interval set kar sakte ho (milliseconds mein)
 });
 
 client.login('DISCORD_BOT_TOKEN');
