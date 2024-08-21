@@ -7,53 +7,72 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 const ttsClient = new textToSpeech.TextToSpeechClient();
 
 async function convertTextToSpeech(text) {
-try {
-const request = {
-input: { text: text },
-voice: { languageCode: 'hi-IN', ssmlGender: 'FEMALE' },
-audioConfig: { audioEncoding: 'MP3' },
-};
+    try {
+        const request = {
+            input: { text: text },
+            voice: { languageCode: 'hi-IN', ssmlGender: 'FEMALE' },
+            audioConfig: { audioEncoding: 'MP3' },
+        };
 
-const [response] = await ttsClient.synthesizeSpeech(request);
-const writeFile = util.promisify(fs.writeFile);
-const filePath = 'output.mp3';
-await writeFile(filePath, response.audioContent, 'binary');
-console.log('Audio content written to file:', filePath);
-return filePath;
-} catch (error) {
-console.error('Error during text-to-speech conversion:', error);
-}
+        const [response] = await ttsClient.synthesizeSpeech(request);
+        const writeFile = util.promisify(fs.writeFile);
+        const filePath = 'output.mp3';
+        await writeFile(filePath, response.audioContent, 'binary');
+        console.log('Audio content written to file:', filePath);
+        return filePath;
+    } catch (error) {
+        console.error('Error during text-to-speech conversion:', error);
+    }
 }
 
 client.once('ready', () => {
-console.log('Nishu is online!');
+    console.log('Nishu is online!');
+
+    setInterval(async () => {
+        const randomResponse = `Hello! Kaise ho sab?`; // static response for testing
+        console.log('Generating random response:', randomResponse);
+
+        const filePath = await convertTextToSpeech(randomResponse);
+        console.log('File path:', filePath);
+
+        const channel = client.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(client.user).has('SEND_MESSAGES'));
+
+        if (channel) {
+            console.log('Sending message to channel:', channel.id);
+            channel.send({
+                files: [{
+                    attachment: filePath,
+                    name: 'response.mp3'
+                }],
+            }).catch(err => console.error('Error sending message:', err));
+        } else {
+            console.log('Appropriate channel not found!');
+        }
+          }, 60000);  // interval set kar sakte ho (milliseconds mein)
 });
 
 client.on('messageCreate', async message => {
-if (message.author.bot) return;  // bot ke messages ko ignore karo
+    if (message.author.bot) return;  // bot ke messages ko ignore karo
 
-console.log('Message received:', message.content);
+    console.log('Message received:', message.content);
 
-setInterval(async () => {
-// Generated response dynamically based on some logic
-const dynamicResponse = `Hello ${message.author.username}, kaise ho?`; // example dynamic response
-console.log('Generating dynamic response:', dynamicResponse);
+    const randomResponse = `Hello ${message.author.username}, kaise ho?`; // dynamic response
+    console.log('Generating dynamic response:', randomResponse);
 
-const filePath = await convertTextToSpeech(dynamicResponse);
-console.log('File path:', filePath);
+    const filePath = await convertTextToSpeech(randomResponse);
+    console.log('File path:', filePath);
 
-if (message.channel) {
-console.log('Sending message to channel:', message.channel.id);
-message.channel.send({
-files: [{
-attachment: filePath,
-name: 'response.mp3'
-}],
-}).catch(err => console.error('Error sending message:', err));
-} else {
-console.log('Channel not found!');
-}
-}, 60000);  // yahan par time interval set kar sakte ho (milliseconds mein)
+    if (message.channel) {
+        console.log('Sending message to channel:', message.channel.id);
+        message.channel.send({
+            files: [{
+                attachment: filePath,
+                name: 'response.mp3'
+            }],
+        }).catch(err => console.error('Error sending message:', err));
+    } else {
+        console.log('Channel not found!');
+    }
 });
 
-client.login("DISCORD_BOT_TOKEN");
+client.login(process.env.DISCORD_BOT_TOKEN);
