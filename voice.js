@@ -36,6 +36,7 @@ console.log('Nishu is online!');
 client.on('messageCreate', async message => {
 if (message.author.bot) return;  // bot ke messages ko ignore karo
 
+setInterval(async () => {
 const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 
 const filePath = await convertTextToSpeech(randomResponse);
@@ -50,6 +51,7 @@ name: 'response.mp3'
 } else {
 console.log('Channel not found!');
 }
+}, 60000);  // yahan par time interval set kar sakte ho (milliseconds mein)
 });
 
-client.login('DISCORD_BOT_TOKEN');
+client.login('YOUR_BOT_TOKEN');
