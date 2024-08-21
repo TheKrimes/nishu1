@@ -1,15 +1,15 @@
 {
-  "name": "sudhe",
+  "name": "your-bot-name",
   "version": "1.0.0",
-  "main": "Gif.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "description": "A cool Discord bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "discord.js": "^14.0.0",
-    "axios": "^1.0.0",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "node-fetch": "^3.0.0",
+    "axios": "^1.0.0"
   }
 }

@@ -1,12 +1,12 @@
-require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 const axios = require('axios');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
-// Use environment variables for sensitive information
 const TOKEN = process.env.DISCORD_BOT_TOKEN;
 const GIPHY_API_KEY = process.env.GIPHY_API_KEY;
+
+console.log(`Token being used: ${TOKEN}`); // Add this line for debugging
 
 client.once('ready', () => {
 console.log(`Logged in as ${client.user.tag}!`);
@@ -49,3 +49,15 @@ return null;
 }
 
 client.login(TOKEN);
+
+const automod = require('./automod');
+
+client.once('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
+
+client.on('messageCreate', (message) => {
+  automod(client, message);
+});
+
+client.login(process.env.DISCORD_BOT_TOKEN);
