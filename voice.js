@@ -1,78 +1,38 @@
-const fs = require('fs');
-const util = require('util');
+oh, sorry! thoda aur debug karte hain. yeh ek aur basic version try karo, direct console outputs ke sath:
+
+**voice.js**:
+```javascript
 const { Client, Intents } = require('discord.js');
-const textToSpeech = require('@google-cloud/text-to-speech');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
-const ttsClient = new textToSpeech.TextToSpeechClient();
-
-async function convertTextToSpeech(text) {
-    try {
-        const request = {
-            input: { text: text },
-            voice: { languageCode: 'hi-IN', ssmlGender: 'FEMALE' },
-            audioConfig: { audioEncoding: 'MP3' },
-        };
-
-        const [response] = await ttsClient.synthesizeSpeech(request);
-        const writeFile = util.promisify(fs.writeFile);
-        const filePath = 'output.mp3';
-        await writeFile(filePath, response.audioContent, 'binary');
-        console.log('Audio content written to file:', filePath);
-        return filePath;
-    } catch (error) {
-        console.error('Error during text-to-speech conversion:', error);
-    }
-}
+console.log('Script started...');
 
 client.once('ready', () => {
-    console.log('Nishu is online!');
-
-    setInterval(async () => {
-        const randomResponse = `Hello! Kaise ho sab?`; // static response for testing
-        console.log('Generating random response:', randomResponse);
-
-        const filePath = await convertTextToSpeech(randomResponse);
-        console.log('File path:', filePath);
-
-        const channel = client.channels.cache.find(channel => channel.type === 'GUILD_TEXT' && channel.permissionsFor(client.user).has('SEND_MESSAGES'));
-
-        if (channel) {
-            console.log('Sending message to channel:', channel.id);
-            channel.send({
-                files: [{
-                    attachment: filePath,
-                    name: 'response.mp3'
-                }],
-            }).catch(err => console.error('Error sending message:', err));
-        } else {
-            console.log('Appropriate channel not found!');
-        }
-          }, 60000);  // interval set kar sakte ho (milliseconds mein)
+console.log('Nishu is online!');
 });
 
-client.on('messageCreate', async message => {
-    if (message.author.bot) return;  // bot ke messages ko ignore karo
-
-    console.log('Message received:', message.content);
-
-    const randomResponse = `Hello ${message.author.username}, kaise ho?`; // dynamic response
-    console.log('Generating dynamic response:', randomResponse);
-
-    const filePath = await convertTextToSpeech(randomResponse);
-    console.log('File path:', filePath);
-
-    if (message.channel) {
-        console.log('Sending message to channel:', message.channel.id);
-        message.channel.send({
-            files: [{
-                attachment: filePath,
-                name: 'response.mp3'
-            }],
-        }).catch(err => console.error('Error sending message:', err));
-    } else {
-        console.log('Channel not found!');
-    }
+client.on('messageCreate', message => {
+if (message.author.bot) return;
+console.log('Message received:', message.content);
 });
 
-client.login(process.env.DISCORD_BOT_TOKEN);
+console.log('Attempting to login...');
+client.login(process.env.DISCORD_BOT_TOKEN).then(() => {
+console.log('Login successful!');
+}).catch(err => {
+console.error('Login error:', err);
+});
+```
+
+is simplified version mein sirf basic functionality check kar rahe hain:
+1. Console logs add kiye hain to trace script execution.
+2. Simplified `ready` aur `messageCreate` events.
+
+isko deploy karke check karo aur logs mein:
+- "Script started..."
+- "Attempting to login..."
+- "Login successful!" (ya error)
+- "Nishu is online!"
+- "Message received: ..." (for incoming messages)
+
+isse hum troubleshoot kar sakte hain ki problem kaha pe aa rahi hai. iske baad bhi agar kuch logs nahi aa rahe hain toh ho sakta hai ki environment variable issue ya kuch aur configuration problem hai. logs ko share karo toh aur help kar sakenge.
