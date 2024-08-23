@@ -4,7 +4,7 @@
   "description": "Most Advanced Discord Bot By Krimes with Shapes INC and Disha",
   "main": "Gif.js",
   "scripts": {
-    "start": "node Gif.js",
+    "start": "node voice.js",
     "voice": "node voice.js"
   },
   "dependencies": {
