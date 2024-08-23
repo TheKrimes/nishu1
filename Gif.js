@@ -123,7 +123,7 @@ if (message.channel) {
 });
 
 console.log('Attempting to login...');
-client.login(DISCORD_BOT_TOKEN).then(() => {
+client.login(process.env.DISCORD_BOT_TOKEN).then(() => {
     console.log('Login successful!');
 }).catch(err => {
     console.error('Login error:', err);
