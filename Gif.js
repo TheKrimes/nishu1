@@ -67,9 +67,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 //Voice Code
 const fs = require('fs');
 const util = require('util');
-const { Client, GatewayIntentBits } = require('discord.js');
 const { TextToSpeechClient } = require('@google-cloud/text-to-speech');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
 const ttsClient = new TextToSpeechClient();
 
