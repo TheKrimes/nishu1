@@ -1,11 +1,11 @@
 require('dotenv').config();
 const fs = require('fs');
 const util = require('util');
-const { Client, Intents } = require('discord.js');
-const textToSpeech = require('@google-cloud/text-to-speech');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const { Client, GatewayIntentBits } = require('discord.js');
+const { TextToSpeechClient } = require('@google-cloud/text-to-speech');
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
-const ttsClient = new textToSpeech.TextToSpeechClient();
+const ttsClient = new TextToSpeechClient();
 
 console.log('voice.js script started...');
 
@@ -39,19 +39,23 @@ client.on('messageCreate', async message => {
     const responseText = `Hello ${message.author.username}, kaise ho?`;
     console.log('Generating dynamic response:', responseText);
 
-    const filePath = await convertTextToSpeech(responseText);
-    console.log('File path:', filePath);
+    try {
+        const filePath = await convertTextToSpeech(responseText);
+        console.log('File path:', filePath);
 
-    if (message.channel) {
-        console.log('Sending message to channel:', message.channel.id);
-        message.channel.send({
-            files: [{
-                attachment: filePath,
-                name: 'response.mp3'
-            }],
-        }).catch(err => console.error('Error sending message:', err));
-    } else {
-        console.log('Channel not found!');
+        if (message.channel) {
+            console.log('Sending message to channel:', message.channel.id);
+            await message.channel.send({
+                files: [{
+                    attachment: filePath,
+                    name: 'response.mp3'
+                }],
+            });
+        } else {
+            console.log('Channel not found!');
+        }
+    } catch (err) {
+        console.error('Error sending message:', err);
     }
 });
 

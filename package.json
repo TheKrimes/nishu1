@@ -1,19 +1,19 @@
 {
-    "name": "Nishu",
-    "version": "1.0.0",
-    "description": "Most Advanced Discord Bot By Krimes with Shapes INC and Disha",
-    "main": "Gif.js",
-    "scripts": {
-        "start": "node Gif.js",
-        "voice": "node voice.js"
-    },
-    "dependencies": {
-        "discord.js": "^14.0.0",
-        "dotenv": "^10.0.0",
-        "node-fetch": "^3.0.0",
-        "axios": "^1.0.0",
-        "@google-cloud/text-to-speech": "^3.0.0",
-        "fs": "0.0.1-security",
-        "util": "^0.12.4"
-    }
+  "name": "Nishu",
+  "version": "1.0.0",
+  "description": "Most Advanced Discord Bot By Krimes with Shapes INC and Disha",
+  "main": "Gif.js",
+  "scripts": {
+    "start": "node Gif.js",
+    "voice": "node voice.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.0.0",
+    "dotenv": "^10.0.0",
+    "node-fetch": "^3.0.0",
+    "axios": "^1.0.0",
+    "@google-cloud/text-to-speech": "^5.4.0",
+    "fs": "0.0.1-security",
+    "util": "^0.12.4"
+  }
 }
