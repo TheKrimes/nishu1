@@ -1,4 +1,3 @@
-require('dotenv').config();
 const fs = require('fs');
 const util = require('util');
 const { Client, GatewayIntentBits } = require('discord.js');
@@ -42,8 +41,7 @@ client.on('messageCreate', async message => {
     try {
         const filePath = await convertTextToSpeech(responseText);
         console.log('File path:', filePath);
-
-        if (message.channel) {
+if (message.channel) {
             console.log('Sending message to channel:', message.channel.id);
             await message.channel.send({
                 files: [{
@@ -60,7 +58,7 @@ client.on('messageCreate', async message => {
 });
 
 console.log('Attempting to login...');
-client.login(process.env.DISCORD_BOT_TOKEN).then(() => {
+client.login(DISCORD_BOT_TOKEN).then(() => {
     console.log('Login successful!');
 }).catch(err => {
     console.error('Login error:', err);
