@@ -65,7 +65,7 @@ client.on('messageCreate', (message) => {
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 //Voice Code
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAIApi, Configuration } = require('openai');
 const fs = require('fs');
 const util = require('util');
 
@@ -78,13 +78,12 @@ console.log('voice.js script started...');
 
 async function convertTextToSpeech(text) {
 try {
-const response = await openai.createCompletion({
-model: 'text-davinci-002',
-prompt: `Convert the following text to speech in Hindi with a female voice: ${text}`,
-max_tokens: 100,
+const response = await openai.createChatCompletion({
+model: 'text-davinci-002', // Ensure you are using the correct model
+messages: [{ role: "system", content: "You are a female Hindi text-to-speech converter." }, { role: "user", content: `Convert this text to speech: ${text}` }],
 });
 
-const audioContent = response.data.choices[0].text;
+const audioContent = response.data.choices[0].message.content;
 const filePath = __dirname + '/output.mp3'; // Use absolute path
 await util.promisify(fs.writeFile)(filePath, audioContent, 'binary');
 console.log('Audio content written to file:', filePath);
