@@ -100,7 +100,7 @@ client.on('messageCreate', async message => {
     if (message.author.bot) return;
 
     console.log('Message received:', message.content);
-    const responseText = `Hello ${message.author.username}, kaise ho?`;
+    const responseText = `Hello Nishu, kaise ho?`;
     console.log('Generating dynamic response:', responseText);
 
     try {
