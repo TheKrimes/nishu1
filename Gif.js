@@ -76,14 +76,15 @@ console.log('voice.js script started...');
 async function convertTextToSpeech(text) {
     try {
         const request = {
-            input: { text: text },
-            voice: { languageCode: 'hi-IN', ssmlGender: 'FEMALE' },
-            audioConfig: { audioEncoding: 'MP3' },
-        };
+input: { text: text },
+voice: { languageCode: 'hi-IN', ssmlGender: 'FEMALE' },
+audioConfig: { audioEncoding: 'MP3' },
+timeout: 30000 // Increase timeout to 30 seconds
+};
 
         const [response] = await ttsClient.synthesizeSpeech(request);
         const writeFile = util.promisify(fs.writeFile);
-        const filePath = 'output.mp3';
+        const filePath = __dirname + '/output.mp3'; // Use absolute path
         await writeFile(filePath, response.audioContent, 'binary');
         console.log('Audio content written to file:', filePath);
         return filePath;
