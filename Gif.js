@@ -65,7 +65,7 @@ client.on('messageCreate', (message) => {
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 //Voice Code
-const { OpenAIApi, Configuration } = require('openai');
+const { Configuration, OpenAIApi } = require('openai');
 const fs = require('fs');
 const util = require('util');
 
@@ -78,14 +78,17 @@ console.log('voice.js script started...');
 
 async function convertTextToSpeech(text) {
 try {
-const response = await openai.createChatCompletion({
+const response = await openai.createCompletion({
 model: 'text-davinci-002', // Ensure you are using the correct model
-messages: [{ role: "system", content: "You are a female Hindi text-to-speech converter." }, { role: "user", content: `Convert this text to speech: ${text}` }],
+prompt: `Convert the following text to speech in Hindi with a female voice: ${text}`,
+max_tokens: 100,
 });
 
-const audioContent = response.data.choices[0].message.content;
+const speechContent = response.data.choices[0].text;
+
+// Assuming 'speechContent' needs to be converted to an audio file
 const filePath = __dirname + '/output.mp3'; // Use absolute path
-await util.promisify(fs.writeFile)(filePath, audioContent, 'binary');
+await util.promisify(fs.writeFile)(filePath, speechContent, 'binary');
 console.log('Audio content written to file:', filePath);
 return filePath;
 } catch (error) {
@@ -99,25 +102,30 @@ console.log('Nishu is online!');
 
 client.on('messageCreate', async message => {
 if (message.author.bot) return;
-console.log('Message received:', message.content);
-const responseText = `Hello Nishu, kaise ho?`;
-console.log('Generating dynamic response:', responseText);
+
+if (message.content.toLowerCase().startsWith('speak ')) {
+const text = message.content.slice('speak '.length);
+console.log('Message received:', text);
+
 try {
-const filePath = await convertTextToSpeech(responseText);
-console.log('File path:', filePath);
-if (message.channel) {
-console.log('Sending message to channel:', message.channel.id);
+const filePath = await convertTextToSpeech(text);
+console.log('Generated audio file path:', filePath);
+
+if (filePath) {
 await message.channel.send({
 files: [{
 attachment: filePath,
-name: 'response.mp3'
-}]
+name: 'response.mp3',
+}],
 });
-} else {
-console.log('Channel not found!');
+} 
+else 
+{
+  console.log('Could not generate audio file.');
 }
 } catch (err) {
-console.error('Error sending message:', err);
+console.error('Error sending audio message:', err);
+}
 }
 });
 
