@@ -68,62 +68,63 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 const { Configuration, OpenAIApi } = require('openai');
 const fs = require('fs');
 const util = require('util');
-const { Client, Intents } = require('discord.js');
-
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
 console.log('voice.js script started...');
 
 async function convertTextToSpeech(text) {
-  try {
-    const response = await openai.createCompletion({
-      model: 'text-davinci-002', // Model name might change based on OpenAI's latest API
-      prompt: `Convert this text to speech: ${text}`,
-      max_tokens: 100,
-    });
+try {
+const response = await openai.createCompletion({
+model: 'text-davinci-002',
+prompt: `Convert the following text to speech in Hindi with a female voice: ${text}`,
+max_tokens: 100,
+});
 
-    const audioContent = response.data.choices[0].text;
-    const filePath = __dirname + '/output.mp3'; // Use absolute path
-    await util.promisify(fs.writeFile)(filePath, audioContent, 'binary');
-    console.log('Audio content written to file:', filePath);
-    return filePath;
-  } catch (error) {
-    console.error('Error during text-to-speech conversion:', error);
-  }
+const audioContent = response.data.choices[0].text;
+const filePath = __dirname + '/output.mp3'; // Use absolute path
+await util.promisify(fs.writeFile)(filePath, audioContent, 'binary');
+console.log('Audio content written to file:', filePath);
+return filePath;
+} catch (error) {
+console.error('Error during text-to-speech conversion:', error);
+}
 }
 
 client.once('ready', () => {
-  console.log('Nishu is online!');
+console.log('Nishu is online!');
 });
 
 client.on('messageCreate', async message => {
-  if (message.author.bot) return;
-  console.log('Message received:', message.content);
-  const responseText = `Hello Nishu, kaise ho?`;
-  console.log('Generating dynamic response:', responseText);
-  try {
-    const filePath = await convertTextToSpeech(responseText);
-    console.log('File path:', filePath);
-    if (message.channel) {
-      console.log('Sending message to channel:', message.channel.id);
-      await message.channel.send({
-        files: [{
-          attachment: filePath,
-          name: 'response.mp3'
-        }]
-      });
-    } else {
-      console.log('Channel not found!');
-    }
-  } catch (err) {
-    console.error('Error sending message:', err);
-  }
+if (message.author.bot) return;
+console.log('Message received:', message.content);
+const responseText = `Hello Nishu, kaise ho?`;
+console.log('Generating dynamic response:', responseText);
+try {
+const filePath = await convertTextToSpeech(responseText);
+console.log('File path:', filePath);
+if (message.channel) {
+console.log('Sending message to channel:', message.channel.id);
+await message.channel.send({
+files: [{
+attachment: filePath,
+name: 'response.mp3'
+}]
+});
+} else {
+console.log('Channel not found!');
+}
+} catch (err) {
+console.error('Error sending message:', err);
+}
 });
 
 console.log('Attempting to login...');
 client.login(process.env.DISCORD_BOT_TOKEN).then(() => {
+console.log('Login successful!');
+}).catch(err => {
+console.error('Login error:', err);
+});
