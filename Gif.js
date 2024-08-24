@@ -65,14 +65,14 @@ client.on('messageCreate', (message) => {
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 //Voice Code
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAIApi } = require('openai');
 const fs = require('fs');
 const util = require('util');
 
-const configuration = new Configuration({
+// Configuration setup for OpenAI
+const openai = new OpenAIApi({
 apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
 console.log('voice.js script started...');
 
@@ -118,9 +118,7 @@ attachment: filePath,
 name: 'response.mp3',
 }],
 });
-} 
-else 
-{
+} else {
   console.log('Could not generate audio file.');
 }
 } catch (err) {
