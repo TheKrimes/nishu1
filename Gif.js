@@ -68,11 +68,13 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 const { Configuration, OpenAIApi } = require('openai');
 const fs = require('fs');
 const util = require('util');
+const { Client, Intents } = require('discord.js');
+
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
 const openai = new OpenAIApi(configuration);
 
 console.log('voice.js script started...');
@@ -80,8 +82,8 @@ console.log('voice.js script started...');
 async function convertTextToSpeech(text) {
   try {
     const response = await openai.createCompletion({
-      model: 'davinci-codex',
-      prompt: text,
+      model: 'text-davinci-002', // Model name might change based on OpenAI's latest API
+      prompt: `Convert this text to speech: ${text}`,
       max_tokens: 100,
     });
 
@@ -125,7 +127,3 @@ client.on('messageCreate', async message => {
 
 console.log('Attempting to login...');
 client.login(process.env.DISCORD_BOT_TOKEN).then(() => {
-  console.log('Login successful!');
-}).catch(err => {
-  console.error('Login error:', err);
-});
