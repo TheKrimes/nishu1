@@ -68,9 +68,6 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 const { OpenAIApi, Configuration } = require("openai");
 const fs = require("fs");
 const util = require("util");
-const { Client, Intents } = require("discord.js");
-
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 const configuration = new Configuration({
 apiKey: process.env.OPENAI_API_KEY,
