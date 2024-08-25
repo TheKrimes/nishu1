@@ -2,7 +2,7 @@ import { Client, GatewayIntentBits } from 'discord.js';
 import axios from 'axios';
 import fs from 'fs';
 import util from 'util';
-import * as openai from 'openai';
+import { OpenAIApi } from 'openai';
 
 console.log(openai);
 
@@ -57,8 +57,8 @@ return null;
 client.login(TOKEN);
 
 //Voice Code
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
+const configuration = new OpenAIApi.Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 const myOpenAI = new OpenAIApi(configuration);
