@@ -2,9 +2,6 @@ import { Client, GatewayIntentBits } from 'discord.js';
 import axios from 'axios';
 import fs from 'fs';
 import util from 'util';
-import { OpenAIApi } from 'openai';
-
-console.log(openai);
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
@@ -57,61 +54,62 @@ return null;
 client.login(TOKEN);
 
 //Voice Code
-const configuration = new OpenAIApi.Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+import { Configuration, OpenAIApi } from 'openai';
+
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 const myOpenAI = new OpenAIApi(configuration);
 
-console.log("Voice script started...");
+console.log("voice.js script started...");
 
 async function convertTextToSpeech(text) {
-try {
-const response = await openai.createCompletion({
-model: "text-davinci-002", // Ensure you are using the correct model
-prompt: `Convert the following text to speech in Hindi with a female voice: ${text}`,
-max_tokens: 100,
-});
+    try {
+        const response = await myOpenAI.createCompletion({
+            model: "text-davinci-002",
+            prompt: `Convert the following text to speech in Hindi with a female voice: ${text}`,
+            max_tokens: 100,
+        });
 
-const speechContent = response.data.choices[0].text;
+        const speechContent = response.data.choices[0].text;
 
-// Assuming 'speechContent' needs to be converted to an audio file
-const filePath = __dirname + "/output.mp3"; // Use absolute path
-await util.promisify(fs.writeFile)(filePath, speechContent, "binary");
-console.log("Audio content written to file:", filePath);
-return filePath;
-} catch (error) {
-console.error("Error during text-to-speech conversion:", error);
-}
+        const filePath = `${__dirname}/output.mp3`;
+        await util.promisify(fs.writeFile)(filePath, speechContent, "binary");
+        console.log("Audio content written to file:", filePath);
+        return filePath;
+    } catch (error) {
+        console.error("Error during text-to-speech conversion:", error);
+    }
 }
 
 client.once("ready", () => {
-console.log("Nishu is online!");
+    console.log("Nishu is online!");
 });
 
 client.on("messageCreate", async (message) => {
-if (message.author.bot) return;
+    if (message.author.bot) return;
 
-if (message.content.toLowerCase().startsWith("speak ")) {
-const text = message.content.slice("speak ".length);
-console.log("Message received:", text);
+    if (message.content.toLowerCase().startsWith("speak ")) {
+        const text = message.content.slice("speak ".length);
+        console.log("Message received:", text);
 
-try {
-const filePath = await convertTextToSpeech(text);
-console.log("Generated audio file path:", filePath);
+        try {
+            const filePath = await convertTextToSpeech(text);
+            console.log("Generated audio file path:", filePath);
 
-if (filePath) {
-await message.channel.send({
-files: [
-{
-attachment: filePath,
-name: "response.mp3",
-},
-],
-});
-} else {
-console.log("Could not generate audio file.");
-}
+            if (filePath) {
+                await message.channel.send({
+                    files: [
+                        {
+                            attachment: filePath,
+                            name: "response.mp3",
+                        },
+                    ],
+                });
+            } else {
+                console.log("Could not generate audio file.");
+            }
         } catch (err) {
             console.error("Error sending audio message:", err);
         }
