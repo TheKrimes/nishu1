@@ -2,7 +2,7 @@ import { Client, GatewayIntentBits } from 'discord.js';
 import axios from 'axios';
 import fs from 'fs';
 import util from 'util';
-import { Configuration, OpenAIApi } from 'openai';
+import { OpenAIApi } from 'openai';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
@@ -70,12 +70,9 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 //Voice Code
 const apiKey = process.env.OPENAI_API_KEY;
 
-const configuration = new Configuration({
-    apiKey: apiKey,
-});
+const openai = new OpenAIApi({ apiKey });
 
-const openai = new OpenAIApi(configuration);
-console.log("voice.js script started...");
+console.log("Voice script started...");
 
 async function convertTextToSpeech(text) {
 try {
