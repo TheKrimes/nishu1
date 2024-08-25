@@ -56,19 +56,6 @@ return null;
 
 client.login(TOKEN);
 
-//Automod Code
-const automod = require('./automod');
-
-client.once('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
-
-client.on('messageCreate', (message) => {
-  automod(client, message);
-});
-
-client.login(process.env.DISCORD_BOT_TOKEN);
-
 //Voice Code
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
