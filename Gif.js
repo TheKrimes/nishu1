@@ -73,6 +73,8 @@ const speechFile = path.resolve("./speech.mp3");
 
 console.log("voice.js script started...");
 
+const apiKey = process.env.OPENAI_API_KEY;
+
 async function convertTextToSpeech(text) {
     try {
         const response = await openai.createCompletion({
