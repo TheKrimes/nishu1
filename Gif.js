@@ -67,7 +67,7 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 //Voice Code
 import OpenAI from "openai";
 
-const openai = new OpenAI()
+const openai = new OpenAI();
 
 const speechFile = path.resolve("./speech.mp3");
 
