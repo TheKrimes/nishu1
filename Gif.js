@@ -67,15 +67,13 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 //Voice Code
 const fs = require("fs");
 const util = require("util");
-const { api } = require('openai');
+const { Configuration, OpenAIApi } = require('openai');
 
-const configuration = {
-apiKey: process.env.OPENAI_API_KEY,
-};
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-const openai = api(configuration);
-
-const apiKey = process.env.OPENAI_API_KEY;
+const openai = new OpenAIApi(configuration);
 
 console.log("voice.js script started...");
 
