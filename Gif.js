@@ -1,5 +1,8 @@
-const { Client, GatewayIntentBits } = require('discord.js');
-const axios = require('axios');
+import { Client, GatewayIntentBits } from 'discord.js';
+import axios from 'axios';
+import fs from 'fs';
+import util from 'util';
+import { Configuration, OpenAIApi } from 'openai';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
@@ -65,14 +68,13 @@ client.on('messageCreate', (message) => {
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 //Voice Code
-const fs = require("fs");
-const util = require("util");
-import OpenAI from 'openai';
+const apiKey = process.env.OPENAI_API_KEY;
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY // This is also the default, can be omitted
+const configuration = new Configuration({
+    apiKey: apiKey,
 });
 
+const openai = new OpenAIApi(configuration);
 console.log("voice.js script started...");
 
 async function convertTextToSpeech(text) {
