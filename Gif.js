@@ -65,11 +65,6 @@ client.on('messageCreate', (message) => {
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 //Voice Code
-const { Client, GatewayIntentBits } = require('discord.js');
-const axios = require('axios');
-
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-
 const { Configuration, OpenAIApi } = require('openai'); // Corrected import
 const fs = require("fs");
 const util = require("util");
