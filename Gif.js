@@ -65,7 +65,7 @@ client.on('messageCreate', (message) => {
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 //Voice Code
-import OpenAI from "openai";
+const { OpenAI } = require('openai');
 
 const openai = new OpenAI();
 
