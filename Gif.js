@@ -65,7 +65,7 @@ client.on('messageCreate', (message) => {
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 //Voice Code
-const { OpenAIApi } = require("openai");
+const { Configuration } = require('openai');
 const fs = require("fs");
 const util = require("util");
 
