@@ -70,7 +70,7 @@ const fs = require("fs");
 const util = require("util");
 
 const apiKey = process.env.OPENAI_API_KEY;
-const openai = new OpenAIApi({
+const openai = new Configuration({
 key: apiKey,
 });
 
