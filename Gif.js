@@ -54,11 +54,11 @@ return null;
 client.login(TOKEN);
 
 //Voice Code
-import { OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-})
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 console.log("voice.js script started...");
 
