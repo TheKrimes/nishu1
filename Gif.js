@@ -74,7 +74,8 @@ const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-const openai = new OpenAIApi(configuration);
+const myOpenAI = new OpenAIApi(configuration);
+
 console.log("Voice script started...");
 
 async function convertTextToSpeech(text) {
