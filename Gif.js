@@ -65,7 +65,7 @@ console.log("voice.js script started...");
 async function convertTextToSpeech(text) {
     try {
         const response = await myOpenAI.createCompletion({
-            model: "text-davinci-002",
+            model: "text-davinci-003",
             prompt: `Convert the following text to speech in Hindi with a female voice: ${text}`,
             max_tokens: 100,
         });
